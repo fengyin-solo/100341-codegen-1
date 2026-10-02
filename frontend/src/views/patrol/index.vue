@@ -18,6 +18,15 @@
       </article>
     </div>
 
+    <div v-if="linkedRows.length" class="linked-banner">
+      <strong>火险联动待办（{{ linkedRows.length }}）</strong>
+      <span>由运营总览「确认处置」自动派单，已写入本模块台账：</span>
+      <span v-for="row in linkedRows" :key="String(row.id)" class="linked-chip">
+        {{ String(row.任务编号) }} · {{ String(row.巡护区域) }} · {{ row.status }}
+      </span>
+      <RouterLink to="/?tab=risk" class="link">去火险态势视图查看</RouterLink>
+    </div>
+
     <p class="status-legend">
       <span v-for="item in statusSummary" :key="item.status" class="legend-item">
         {{ item.status }}：{{ item.count }}
@@ -98,6 +107,8 @@ const statusSummary = computed(() =>
     count: rows.value.filter((row) => String(row.status) === status).length,
   })),
 )
+
+const linkedRows = computed(() => rows.value.filter((row) => Boolean(row.来源风险)))
 
 function resetFilters() {
   filters.value = {}

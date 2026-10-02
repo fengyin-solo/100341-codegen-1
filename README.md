@@ -13,7 +13,9 @@
 .
 ├── frontend/                 Vue 3 + Vite + TypeScript 前端（唯一运行单元）
 │   ├── src/views/            每个业务模块一个页面
+│   ├── src/views/riskboard/  火险态势视图（运营概览内页签）
 │   ├── src/api/local-service.ts   本地数据服务：列表、筛选、动作流转、导出
+│   ├── src/api/risk-service.ts    火险态势服务：风险提交、派单联动、口径版本、总览快照
 │   ├── src/data/             模块元数据 / 示例数据 / localStorage 持久化
 │   ├── src/stores/           会话与筛选状态
 │   └── vite.config.ts        dev server 配置（open: false，无 /api 代理）
@@ -61,6 +63,27 @@ npm run build
 | 焚烧审批 | `burnpermit` | 用火审批单 | 审批编号、申请单位、用火类型 |
 | 林木生长 | `treegrowth` | 林木生长记录 | 记录编号、样地编号、林分类型 |
 
+## 运营概览 · 火险态势视图
+
+运营概览页有两个页签：指标总览与**火险态势视图**（`src/views/riskboard/index.vue`）。
+
+- **按风险排成看板**：未归档风险点按高 / 中 / 低三列排列，每张卡片同时展示
+  风险来源（火险监测点快照：编号、区域、监测状态、风力、湿度等）、联动的巡护任务与
+  扑火队伍，以及待核实 → 已派单 → 处置中 → 已确认 → 已归档的处置进度时间线。
+- **并发提交只生效一次**：同一监测点存在未归档风险时，风险服务（`risk-service.ts`
+  的 `submitRisk`）以「监测点编号@区域」为唯一键做同步校验落库；两名值班员并发提交时，
+  只有先落库的一次生效，后提交者会收到与先落库记录冲突的提示。页面上的
+  「模拟甲、乙两名值班员并发提交同一风险点」按钮可直接验证。
+- **确认处置跨模块落库**：值班员「确认处置并派单」后，巡护任务模块新增一份
+  `待执行` 的巡护待办，扑火队伍模块新增一份 `已出动` 的队伍台账记录（带 `来源风险`
+  字段），两个模块页面顶部会出现「火险联动」横幅，而不只是总览数字变化。
+- **口径版本化**：风险口径（监测状态 → 风险等级的映射）带版本号。发布新口径后，
+  未归档风险立即按新口径重算（时间线留痕）；已归档风险冻结在归档时的等级与口径版本，
+  归档区还会对照显示现行口径下的等级。「生成当前总览快照」把当时的分级统计与口径版本
+  一起冻结到历史快照表，之后口径再调也不回改历史快照。
+- 火险态势数据持久化在 `forest-fire-patrol:risk-state`；冒烟测试：
+  `node --no-warnings --loader ./scripts/ts-loader.mjs scripts/smoke-risk.mjs`。
+
 ## 约定
 
 - 每个模块的页面在 `frontend/src/views/<模块>/index.vue`，页面只负责渲染，读写统一走
@@ -68,4 +91,6 @@ npm run build
 - 字段、状态、动作与流转目标集中在 `frontend/src/data/modules.ts`；示例数据在
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
-- 想回到初始数据：清掉浏览器里 `forest-fire-patrol:entries` 这一项，或调用 `resetModule(模块)`。
+- 想回到初始数据：清掉浏览器里 `forest-fire-patrol:entries` 与
+  `forest-fire-patrol:risk-state` 两项，或在运营概览页点「重置本页示例数据」
+  （会同时重置巡护、队伍模块与火险态势）。
