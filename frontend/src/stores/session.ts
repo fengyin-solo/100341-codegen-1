@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 
+export const OPERATOR_OPTIONS = ['值班管理员', '值班员甲', '值班员乙']
+
 export const useSessionStore = defineStore('session', {
   state: () => ({
     operator: '值班管理员',
@@ -12,6 +14,9 @@ export const useSessionStore = defineStore('session', {
   actions: {
     setShift(label: string) {
       this.shiftLabel = label
+    },
+    setOperator(name: string) {
+      this.operator = name
     },
   },
 })

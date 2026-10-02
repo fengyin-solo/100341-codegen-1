@@ -35,3 +35,46 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+
+/* 火险态势视图：看板、面板与风险等级配色 */
+.operator-switch { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.section-title { margin: 16px 0 8px; font-size: 14px; }
+.panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.panel-title { margin: 0 0 10px; font-size: 14px; }
+.panel-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+.filter-item.grow { flex: 1; }
+.filter-item input, .filter-item select { min-width: 160px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; }
+.board-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+.board-col { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px; min-height: 120px; }
+.board-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.board-level { font-weight: 600; font-size: 13px; }
+.board-count { color: var(--muted); font-size: 12px; }
+.board-col[data-level="极高"] .board-level { color: #b42318; }
+.board-col[data-level="高"] .board-level { color: #c2410c; }
+.board-col[data-level="中"] .board-level { color: #a16207; }
+.board-col[data-level="低"] .board-level { color: #1d4ed8; }
+.board-card { display: flex; flex-direction: column; gap: 2px; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; margin-bottom: 6px; font-size: 12px; }
+.card-kind { align-self: flex-start; background: #eef2f7; border-radius: 999px; padding: 0 8px; font-size: 11px; color: var(--muted); }
+.card-code { font-size: 13px; }
+.card-title, .card-status { color: var(--muted); }
+.board-empty { color: var(--muted); font-size: 12px; text-align: center; }
+.two-col { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+.source-list { list-style: none; margin: 0; padding: 0; }
+.source-list li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
+.risk-list { list-style: none; margin: 0; padding: 0; }
+.risk-item { border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+.risk-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 2px 0; font-size: 13px; }
+.risk-meta { color: var(--muted); font-size: 12px; }
+.risk-level { border-radius: 999px; padding: 0 8px; font-size: 12px; color: #fff; }
+.risk-level[data-level="极高"] { background: #b42318; }
+.risk-level[data-level="高"] { background: #c2410c; }
+.risk-level[data-level="中"] { background: #a16207; }
+.risk-level[data-level="低"] { background: #1d4ed8; }
+.flow-steps { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 12px; }
+.flow-steps li { border: 1px solid var(--border); border-radius: 999px; padding: 1px 10px; color: var(--muted); }
+.flow-steps li.done { background: #e7f6ec; border-color: #2f9e44; color: #2f9e44; }
+.criteria-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 10px; }
+.criteria-block h4 { margin: 0 0 6px; font-size: 13px; }
+.criteria-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 4px; }
+.criteria-item input { width: 64px; padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; }
+.notice-text { color: #2f9e44; }
